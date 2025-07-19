@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-protected $guarded = [];
+    use HasFactory;
 
-public function problems()
-{
-    return $this->belongsToMany(Problem::class);
-}
+    protected $guarded = [];
 
+    public function problems()
+    {
+        return $this->belongsToMany(Problem::class);
+    }
 }
