@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ProblemResource\RelationManagers;
+namespace App\Filament\Resources\PermissionResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -10,9 +10,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TagsRelationManager extends RelationManager
+class RolesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'tags';
+    protected static string $relationship = 'roles';
 
     public function form(Form $form): Form
     {
@@ -35,9 +35,7 @@ class TagsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                // Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make()->preloadRecordSelect()->multiple(),
-
+                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
