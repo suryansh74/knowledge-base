@@ -19,7 +19,7 @@ class CommentFactory extends Factory
         return [
             'user_id' => fake()->randomElement(\App\Models\User::pluck('id')->toArray()),
             'problem_id' => fake()->randomElement(\App\Models\Problem::pluck('id')->toArray()),
-            'content' => $this->faker->optional()->paragraph(),
+            'content' => $this->faker->paragraph(),
         ];
     }
 }

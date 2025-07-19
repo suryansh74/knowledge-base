@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\CommentResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProblemsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'problems';
+    protected static string $relationship = 'problem';
 
     public function form(Form $form): Form
     {
@@ -38,7 +38,7 @@ class ProblemsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([

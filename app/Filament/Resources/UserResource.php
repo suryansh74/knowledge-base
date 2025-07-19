@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\PermissionResource\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -46,6 +47,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('updated_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -72,7 +74,7 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->hidden(!auth()->user()->hasPermission('user_delete')),
                 ]),
             ]);
     }
@@ -80,8 +82,9 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ProblemsRelationManager::class,
-            CommentsRelationManager::class,
+            // ProblemsRelationManager::class,
+            // CommentsRelationManager::class,
+            RolesRelationManager::class,
         ];
     }
 

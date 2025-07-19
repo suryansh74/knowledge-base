@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProblemResource\Pages;
 use App\Filament\Resources\ProblemResource\RelationManagers;
+use App\Filament\Resources\ProblemResource\RelationManagers\CommentsRelationManager;
 use App\Models\Problem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -25,9 +26,6 @@ class ProblemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
@@ -39,6 +37,7 @@ class ProblemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('updated_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable(),
@@ -62,7 +61,7 @@ class ProblemResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->hidden(!auth()->user()->hasPermission('problem_delete')),
                 ]),
             ]);
     }
@@ -71,6 +70,7 @@ class ProblemResource extends Resource
     {
         return [
             TagsRelationManager::class,
+            CommentsRelationManager::class,
         ];
     }
 

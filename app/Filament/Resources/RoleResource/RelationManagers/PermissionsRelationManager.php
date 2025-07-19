@@ -35,7 +35,7 @@ class PermissionsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
+                Tables\Actions\AttachAction::make()->preloadRecordSelect()->multiple(),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

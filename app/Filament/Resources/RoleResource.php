@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use App\Filament\Resources\RoleResource\RelationManagers\PermissionsRelationManager;
+use App\Filament\Resources\RoleResource\RelationManagers\UsersRelationManager;
 use App\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -52,6 +53,7 @@ class RoleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->hidden(!auth()->user()->hasPermission('role_delete')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -64,6 +66,7 @@ class RoleResource extends Resource
     {
         return [
             PermissionsRelationManager::class,
+            UsersRelationManager::class,
         ];
     }
 

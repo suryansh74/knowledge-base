@@ -53,6 +53,7 @@ class PermissionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->hidden(!auth()->user()->hasPermission('permission_delete')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

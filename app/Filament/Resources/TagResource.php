@@ -26,6 +26,8 @@ class TagResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique()
+                    ->autofocus()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -51,6 +53,7 @@ class TagResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->hidden(!auth()->user()->hasPermission('tag_delete')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
