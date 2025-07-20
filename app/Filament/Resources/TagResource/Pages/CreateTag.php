@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTag extends CreateRecord
 {
     protected static string $resource = TagResource::class;
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['user_id'] = auth()->id();
+        return $data;
+    }
 }

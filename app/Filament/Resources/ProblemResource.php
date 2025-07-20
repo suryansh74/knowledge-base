@@ -55,7 +55,7 @@ class ProblemResource extends Resource
                         $set('slug', str()->slug($state));
                     })
                     ->maxLength(255),
-                Forms\Components\TextInput::make('slug')->readOnly(),
+                Forms\Components\TextInput::make('slug')->unique(ignoreRecord: true)->readOnly(),
                 Forms\Components\Textarea::make('content')
                     ->columnSpanFull(),
                 // File Upload for .md files
