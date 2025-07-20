@@ -21,6 +21,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\TextEntry;
+// use Filament\Infolists\Components\MarkdownEntry;
+use Filament\Infolists\Infolist;
+use Illuminate\Support\HtmlString;
 
 class ProblemResource extends Resource
 {
@@ -43,16 +47,16 @@ class ProblemResource extends Resource
                 Forms\Components\Textarea::make('content')
                     ->columnSpanFull(),
                 // File Upload for .md files
-                FileUpload::make('markdown_file')
-                    ->label('Upload Markdown File')
-                    ->acceptedFileTypes(['text/markdown', '.md'])
-                    ->dehydrated(false) // Don't save file path to DB
+                FileUpload::make('html_file')
+                    ->label('Upload HTML File')
+                    ->acceptedFileTypes(['text/html', '.html'])
+                    ->dehydrated(false) // Don't store file path in DB
                     ->afterStateUpdated(function ($state, callable $set, $get) {
                         if (!$state) {
                             return;
                         }
 
-                        $file = $get('markdown_file');
+                        $file = $get('html_file');
                         if (is_array($file)) {
                             $file = reset($file);
                         }
@@ -62,18 +66,19 @@ class ProblemResource extends Resource
                             $fullPath = Storage::disk('public')->path($storedPath);
 
                             if (!file_exists($fullPath)) {
-                                return; // Could log error here
+                                return;
                             }
 
-                            $content = file_get_contents($fullPath);
+                            // Read HTML content
+                            $htmlContent = file_get_contents($fullPath);
 
-                            // Copy markdown content into editor
-                            $set('markdown', $content);
+                            // Store HTML directly into `markdown` field (now acting as HTML)
+                            $set('markdown', $htmlContent);
 
-                            // Optional: Delete the uploaded file so only DB content remains
+                            // Delete temp file so it’s only in DB
                             unlink($fullPath);
                         }
-                    }),
+                    })->visibleOn(['create', 'edit']),
 
                 MarkdownEditor::make('markdown')
                     ->label('Markdown Content')
@@ -100,10 +105,14 @@ class ProblemResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->recordUrl(
+                fn($record) => static::getUrl('edit', ['record' => $record]),
+            )
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->label('View on Website')->url(fn($record) => 'https://google.com'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
