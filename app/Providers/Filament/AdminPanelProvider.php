@@ -66,6 +66,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Knowledge Base')
             ->plugin(
                 \Hasnayeen\Themes\ThemesPlugin::make()
+                    ->canViewThemesPage(fn (): bool => auth()->check() && auth()->user()->roles->contains('name', 'admin'))
             )
             ->middleware([
                 SetTheme::class
