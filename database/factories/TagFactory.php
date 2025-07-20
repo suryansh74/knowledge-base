@@ -17,7 +17,8 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word(),            
+            'user_id' => fake()->randomElement(\App\Models\User::pluck('id')->toArray()),
+            'name' => $this->faker->unique()->word(),
         ];
     }
 }

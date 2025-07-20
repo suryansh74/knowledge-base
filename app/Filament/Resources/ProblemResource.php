@@ -29,6 +29,16 @@ use Illuminate\Support\HtmlString;
 class ProblemResource extends Resource
 {
     protected static ?string $model = Problem::class;
+    
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    // public static function getNavigationBadgeColor(): ?string
+    // {
+    //     return 'warning';
+    // }
 
     protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
 
