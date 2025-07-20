@@ -50,6 +50,17 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            // Find or create 'member' role
+            $memberRole = \App\Models\Role::firstOrCreate(['name' => 'member']);
+
+            // Attach role (many-to-many)
+            $user->roles()->attach($memberRole->id);
+        });
+    }
+
     /**
      * Get the problems of this user.
      */
@@ -57,7 +68,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Problem::class);
     }
-    
+
     /**
      * Get the comments of this user.
      */
@@ -65,7 +76,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-    
+
     /**
      * Get the roles of this user.
      */
@@ -73,7 +84,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
-    
+
     /**
      * Check if the user has a given permission.
      *
@@ -84,7 +95,7 @@ class User extends Authenticatable
     {
         return $this->roles->pluck('permissions')->flatten()->contains('name', $permission);
     }
-    
+
     /**
      * Check if the user has a given role.
      *
