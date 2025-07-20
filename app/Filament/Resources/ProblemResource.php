@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+
 use App\Filament\Resources\ProblemResource\Pages;
 use App\Filament\Resources\ProblemResource\RelationManagers;
 use App\Filament\Resources\ProblemResource\RelationManagers\CommentsRelationManager;
@@ -14,6 +17,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use app\Filament\Resources\ProblemResource\RelationManagers\TagsRelationManager;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 
@@ -36,6 +41,42 @@ class ProblemResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')->readOnly(),
                 Forms\Components\Textarea::make('content')
+                    ->columnSpanFull(),
+                // File Upload for .md files
+                FileUpload::make('markdown_file')
+                    ->label('Upload Markdown File')
+                    ->acceptedFileTypes(['text/markdown', '.md'])
+                    ->dehydrated(false) // Don't save file path to DB
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        if (!$state) {
+                            return;
+                        }
+
+                        $file = $get('markdown_file');
+                        if (is_array($file)) {
+                            $file = reset($file);
+                        }
+
+                        if ($file instanceof TemporaryUploadedFile) {
+                            $storedPath = $file->store('temp', 'public');
+                            $fullPath = Storage::disk('public')->path($storedPath);
+
+                            if (!file_exists($fullPath)) {
+                                return; // Could log error here
+                            }
+
+                            $content = file_get_contents($fullPath);
+
+                            // Copy markdown content into editor
+                            $set('markdown', $content);
+
+                            // Optional: Delete the uploaded file so only DB content remains
+                            unlink($fullPath);
+                        }
+                    }),
+
+                MarkdownEditor::make('markdown')
+                    ->label('Markdown Content')
                     ->columnSpanFull(),
             ]);
     }
