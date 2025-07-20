@@ -19,6 +19,7 @@ class TagsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique(ignoreRecord: true, table: 'tags', column: 'name')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -36,6 +37,7 @@ class TagsRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()->preloadRecordSelect()->multiple(),
 
             ])

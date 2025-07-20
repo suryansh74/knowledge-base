@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use app\Filament\Resources\TagResource\RelationManagers\ProblemsRelationManager;
-
+use App\Filament\Resources\TagResource\Widgets\TagChart;
 
 class TagResource extends Resource
 {
@@ -50,7 +50,7 @@ class TagResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -68,6 +68,13 @@ class TagResource extends Resource
         return [
             ProblemsRelationManager::class,
 
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            TagChart::class,
         ];
     }
 

@@ -98,4 +98,12 @@ return [
 
     'system_route_prefix' => 'filament',
 
+    'colors' => [
+        'primary' => \Filament\Support\Colors\Color::Blue,
+        'gray' => \Filament\Support\Colors\Color::Gray,
+        'success' => \Filament\Support\Colors\Color::Green,
+        'warning' => \Filament\Support\Colors\Color::Amber,
+        'danger' => \Filament\Support\Colors\Color::Red,
+    ],
+
 ];
