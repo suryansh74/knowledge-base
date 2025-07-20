@@ -27,6 +27,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->registration()
+            ->emailVerification()
+            // ->profile()
+            ->passwordReset()
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
@@ -56,6 +60,5 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->brandName('Knowledge Base');
-            // ->brandLogo(asset('images/logo.png'))->brandLogoHeight('3rem');
     }
 }
