@@ -29,7 +29,9 @@ use Illuminate\Support\HtmlString;
 class ProblemResource extends Resource
 {
     protected static ?string $model = Problem::class;
-    
+
+    protected static ?string $navigationGroup = "Resource";
+
 
     public static function getNavigationBadge(): ?string
     {

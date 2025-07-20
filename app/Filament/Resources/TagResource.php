@@ -19,10 +19,14 @@ class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
 
+    protected static ?string $navigationGroup = "Resource";
+
+
+
     public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+    {
+        return static::getModel()::count();
+    }
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
@@ -54,9 +58,7 @@ class TagResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()->hidden(!auth()->user()->hasPermission('tag_delete')),
