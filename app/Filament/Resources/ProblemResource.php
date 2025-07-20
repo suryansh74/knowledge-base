@@ -30,7 +30,7 @@ class ProblemResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->lazy()
-                    ->afterStateUpdated(function(Set $set, ?string $state){
+                    ->afterStateUpdated(function (Set $set, ?string $state) {
                         $set('slug', str()->slug($state));
                     })
                     ->maxLength(255),
@@ -49,6 +49,7 @@ class ProblemResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tags.name')->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
