@@ -37,7 +37,7 @@ class TagPolicy
      */
     public function update(User $user, Tag $tag): bool
     {
-        return $user->hasPermission('tag_update') && $tag->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('tag_update') && $tag->user_id === $user->id);
     }
 
     /**
@@ -45,7 +45,7 @@ class TagPolicy
      */
     public function delete(User $user, Tag $tag): bool
     {
-        return $user->hasPermission('tag_delete') && $tag->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('tag_delete') && $tag->user_id === $user->id);
     }
 
     /**

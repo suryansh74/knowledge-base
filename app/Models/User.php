@@ -82,4 +82,15 @@ class User extends Authenticatable
     {
         return $this->roles->pluck('permissions')->flatten()->contains('name', $permission);
     }
+    
+    /**
+     * Check if the user has a given role.
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->roles->contains('name', $role);
+    }
 }

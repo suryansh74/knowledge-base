@@ -14,7 +14,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use app\Filament\Resources\ProblemResource\RelationManagers\TagsRelationManager;
-
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 class ProblemResource extends Resource
 {
@@ -28,7 +29,12 @@ class ProblemResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required()
+                    ->lazy()
+                    ->afterStateUpdated(function(Set $set, ?string $state){
+                        $set('slug', str()->slug($state));
+                    })
                     ->maxLength(255),
+                Forms\Components\TextInput::make('slug')->readOnly(),
                 Forms\Components\Textarea::make('content')
                     ->columnSpanFull(),
             ]);

@@ -37,7 +37,7 @@ class ProblemPolicy
      */
     public function update(User $user, Problem $problem): bool
     {
-        return $user->hasPermission('problem_update') && $problem->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('problem_update') && $problem->user_id === $user->id);
     }
 
     /**
@@ -45,7 +45,7 @@ class ProblemPolicy
      */
     public function delete(User $user, Problem $problem): bool
     {
-        return $user->hasPermission('problem_delete') && $problem->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('problem_delete') && $problem->user_id === $user->id);
     }
 
     /**
@@ -64,4 +64,3 @@ class ProblemPolicy
         return false;
     }
 }
-

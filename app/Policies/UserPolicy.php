@@ -36,7 +36,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermission('user_update');
+        return $user->hasPermission('user_update') || $user->id = $model->id;
     }
 
     /**
@@ -44,7 +44,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->hasPermission('user_delete');
+        return $user->hasPermission('user_delete') || $user->id = $model->id;
     }
 
     /**

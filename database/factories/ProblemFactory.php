@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Problem>
@@ -19,6 +20,7 @@ class ProblemFactory extends Factory
         return [
             'user_id' => fake()->randomElement(\App\Models\User::pluck('id')->toArray()),
             'title' => fake()->sentence(),
+            'slug' => Str::slug(fake()->sentence()),            
             'content' => fake()->optional()->paragraph(),
         ];
     }

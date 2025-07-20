@@ -37,7 +37,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        return $user->hasPermission('comment_update') && $comment->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('comment_update') && $comment->user_id === $user->id);
     }
 
     /**
@@ -45,7 +45,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->hasPermission('comment_delete') && $comment->user_id === $user->id;
+        return $user->hasRole('admin') || ($user->hasPermission('comment_delete') && $comment->user_id === $user->id);
     }
 
     /**
