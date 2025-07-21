@@ -1,61 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HTML Docs Manager (Laravel + Filament)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Goal of the App
+This application is built to **store and manage HTML-based documentation** generated from interactions with online LLMs (Large Language Models).  
+When solving complex tasks with LLMs, conversations often involve **trial and error**. Once a task is completed, repeating the same steps later can be tedious and violate the "Don't Repeat Yourself (DRY)" principle.
 
-## About Laravel
+With this app, you can:
+- Ask your LLM to generate a **concise HTML document** of the final, working steps (excluding failed attempts).
+- Upload that HTML file to this application for future reference.
+- Edit and manage your documents easily.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Description
+- **Backend**: Laravel + Filament (Admin panel)  
+- **Main Resources**:
+  1. `Problem` – Stores the HTML documentation.
+  2. `Tag` – Categorizes problems.
+  3. `Comment` – Currently disabled (can be enabled later).
+- **Authorization**:  
+  - Admin users can manage all resources, roles, and permissions.  
+  - Members (default role) can only view `Problem` and `Tag`.  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Seeder Details
+After cloning the repository:
+```bash
+php artisan migrate:fresh --seed
+```
+This will seed the following:
+1. Permissions  
+2. Roles  
+3. Users  
+4. Problems  
+5. Tags  
+6. Comments  
 
-## Learning Laravel
+An **admin user** will be created:  
+- **Email**: `admin@admin.com`  
+- **Password**: `12341234`  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Themes
+The [Hasnayeen Themes package](https://github.com/Hasnayeen/themes) is installed.  
+- Accessible only to **Admin** users.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## How It Works
+1. Work with your LLM to complete a personal task (e.g., *installing Zsh in Ubuntu with autocomplete*).
+2. Once complete, ask your LLM to generate **downloadable HTML documentation** using this prompt:
 
-## Laravel Sponsors
+   ```
+   make docs for complete working step by step concise in HTML format, make file downloadable, for code snippet if present add clipboard svg to copy the code block, text color white, and background for code snippet should be black
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   - Adjust the prompt as needed (for extra links or formatting).
+   - Download the generated HTML file.
 
-### Premium Partners
+3. Log in to the app (as Member or Admin).  
+4. Go to **Problems** → **Create New Problem**.  
+5. Upload the HTML file using the **HTML file upload** option.  
+6. Edit the HTML directly in the built-in text editor if needed (add links, tweak styles, etc.).  
+7. Save the problem.  
+8. Navigate to **Dashboard** or **My Data** to view your uploaded problems.  
+9. Click on a problem to view its **HTML document** rendered on the frontend.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Suggestions for Customization
+- **Seeder Optimization**:  
+  - You can skip seeding example `Problem`, `Tag`, `User`, or `Comment` data if not needed.
+- **Enable Comments**:  
+  - Currently, frontend comments are not implemented.  
+  - You can enable commenting by assigning **Comment** permissions to the `Member` role and building the frontend UI.
+- **Theme Customization**:  
+  - Modify or extend the Hasnayeen Theme package for additional styling.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Installation
+```bash
+git clone <your-repository-url>
+cd <your-project-folder>
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+php artisan serve
+```
+- Visit `http://localhost:8000`  
+- Login with the **admin** credentials above.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Default Roles
+| Role     | Permissions                                           |
+|----------|-------------------------------------------------------|
+| Admin    | Full access (Users, Roles, Permissions, Problems, Tags) |
+| Member   | Can only view `Problem` and `Tag`                     |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
